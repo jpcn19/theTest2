@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    var arr = [1,2,2,3,4,5,6,6,6,7,7,7,7,7,7,8,7,6,6,5,4,4,3,3,3,2,1];
+
+    function showArr(arr,last,start,end) {
+        start = start||0;
+        end = end||(arr.length-1);
+        var n ;
+        if(start <= end){
+            if(arr[start]<=arr[end]){
+                n = arr[start];
+                start+=1;
+            }else{
+                n = arr[end];
+                end-=1;
+            }
+            if(n!= last){
+                console.log(n);
+            }
+            showArr(arr,n,start,end)
+        }
+    }
+    showArr(arr);
+</script>
+</body>
+</html>
