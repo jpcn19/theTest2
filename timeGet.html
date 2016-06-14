@@ -5,6 +5,107 @@
     <title>Title</title>
 </head>
 <body>
+<script>
+    function Timer (time, area) {
+        var Area ={
 
+        };
+        time = time-0;
+        this.time = (time/Math.pow(10,12)>1?time:time*1000)+ (Area[area]||0);
+        this.date = new Date(this.time);
+        this.type ="yyyy-mm-dd hh:mm:ss";
+    }
+    Timer.prototype.setType = function (type) {
+        this.type =!type? "yyyy-mm-dd hh:mm:ss":type.toLocaleLowerCase().trim().replace(/\s+/g,' ');;
+    };
+    Timer.prototype.getType = function () {
+        var _type = this.type;
+        _type = _type.split(" ");
+        if(_type.length>1){
+            var _tt = [];
+            _tt.push(_type[0]);
+            _tt.push(_type[1]);
+            return _tt;
+        }else{
+            return _type[0];
+        }
+    };
+    Timer.prototype.showTimeWord = function () {
+        var _type = this.getType();
+        var word = "";
+        if(_type instanceof Array){
+            var _t1 = _type[0].split("-");
+            var _t2 = _type[1].split(":");
+            for(var i =0,l = _t1.length;i<l;i++){
+                word+=this.getTimeWord(_t1[i]);
+            }
+            word+=" ";
+            for(i = 0,l=_t2.length;i<l;i++){
+                word+=this.getTimeWord(_t2[i],1);
+            }
+        }else{
+            var p = _type.indexOf(":")>0;
+            _type = !p?_type.split("-"):_type.split(":");
+            for(i = 0,l=_type.length;i<l;i++){
+                word+=this.getTimeWord(_type[i],p);
+            }
+        }
+        return word;
+    };
+    Timer.prototype.getTimeWord = function (time,p) {
+        var txt = "",temp , date = this.date;
+        if(time.indexOf("y")>-1){
+            temp = time.length>2?0:2;
+            txt = (date.getFullYear()+"").slice(temp)+"年";
+        }
+        if(time.indexOf("m")>-1&&!p){
+            temp = reWork("m");
+            txt = temp+"月"
+        }
+        if(time.indexOf("d")>-1){
+            temp = reWork("d");
+            txt = temp+"日";
+        }
+
+        if(time.indexOf("h")>-1){
+            temp = reWork("h");
+            txt = temp+"时";
+        }
+        if(time.indexOf("m")>-1&&p){
+            temp = reWork("m");
+            txt = temp+"分";
+        }
+        if(time.indexOf("s")>-1){
+            temp = reWork("s");
+            txt = temp+"秒";
+        }
+
+        function reWork(type) {
+            var _w;
+            switch (type){
+                case "m":
+                    _w = !p ? (date.getMonth() + 1) : date.getMinutes();
+                    break;
+                case "d":
+                    _w = date.getDate();
+                    break;
+                case "h":
+                    _w = date.getHours();
+                    break;
+                case "s":
+                    _w = date.getSeconds();
+                    break;
+            }
+            _w = _w-0;
+            if(time.length>1){
+                return _w <10?("0"+_w):_w;
+            }else{
+                return _w;
+            }
+        }
+
+        return txt;
+    };
+</script>
 </body>
 </html>
